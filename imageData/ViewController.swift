@@ -22,10 +22,9 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
-        
-        //cell.ca =  Category?[indexPath.row].self
-        
-     //   cell.categoryname = Category?[indexPath.row].name
+    //=========================Not setting the getting the data  to be representd=======
+//       cell.categoryname = Category?[indexPath.row].name
+//        cell.categoryimageView = Category?[indexPath.row].image
         return cell
     }
     
@@ -33,8 +32,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     @IBOutlet weak var collectionView: UICollectionView!
     
     var Category: [Categories]?
-    var catArr:[String] = []
-    var catImage:[String] = []
+    
     
     func fetchCategory() {
         // Define server side script URL
@@ -66,7 +64,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 do {
                     let categories =   try  decoder.decode(Categories.self, from: data!)
                     
-                     for json in categories["Data"]  {
+                     for json in categories["Data"]  { ///giving error
                         
                         if let Name = json["name"] as? String {
                             print(Name)
