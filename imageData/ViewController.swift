@@ -8,34 +8,72 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        
-        //=====api end point===
-        let urlstring = "https://ichuzz2work.com/api/services/categories"
-        
-        let url = URL(string: urlstring)
-        guard url != nil else {
-            return
+        if let count = Category?.count {
+            return count
         }
+        return Category?.count ?? 0
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
+        
+        //cell.ca =  Category?[indexPath.row].self
+        
+     //   cell.categoryname = Category?[indexPath.row].name
+        return cell
+    }
+    
+
+    @IBOutlet weak var collectionView: UICollectionView!
+    
+    var Category: [Categories]?
+    var catArr:[String] = []
+    var catImage:[String] = []
+    
+    func fetchCategory() {
+        // Define server side script URL
+        let scriptUrl = "https://ichuzz2work.com/api/services/categories"
+        
+        // Create URL Ibject
+        guard  let myUrl = URL(string: scriptUrl) else{ return}
+        
+        // Creaste URL Request
+        var request = URLRequest(url:myUrl)
+        
+        // Set request HTTP method to GET. It could be POST as well
+        request.httpMethod = "GET"
+        // request.addValue("Token token=884288bae150b9f2f68d8dc3a932071d", forHTTPHeaderField: "Authorization")
+        
         //===session===
         let session = URLSession.shared
-        //======data task====
-        
-        let dataTask = session.dataTask(with: url!) { (data, response, error) in
+        let dataTask = session.dataTask(with: request) { (data, response, error) in
+            
+            
+           // let str = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+           // print(str ?? "")
             
             //====check for errors===
             if error == nil &&  data != nil {
-                
                 //=====parse the json===
                 let decoder = JSONDecoder()
                 
                 do {
                     let categories =   try  decoder.decode(Categories.self, from: data!)
-                    print(categories)
+                    
+                     for json in categories["Data"]  {
+                        
+                        if let Name = json["name"] as? String {
+                            print(Name)
+                        }
+                        
+                    }
+                  
                     
                 }
                 catch {
@@ -44,8 +82,22 @@ class ViewController: UIViewController {
             }
             
         }
+        
         //===make api call
         dataTask.resume()
+        
+    }
+    
+    
+    
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        fetchCategory()
+        
+        
     }
     
     

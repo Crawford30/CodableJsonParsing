@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EE58F71E23F5295500B5BE82 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE58F71D23F5295500B5BE82 /* CollectionViewCell.swift */; };
 		EEA110DD23F453D800D9EAFE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA110DC23F453D800D9EAFE /* AppDelegate.swift */; };
 		EEA110DF23F453D800D9EAFE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA110DE23F453D800D9EAFE /* SceneDelegate.swift */; };
 		EEA110E123F453D800D9EAFE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA110E023F453D800D9EAFE /* ViewController.swift */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EE58F71D23F5295500B5BE82 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		EEA110D923F453D800D9EAFE /* imageData.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = imageData.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EEA110DC23F453D800D9EAFE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EEA110DE23F453D800D9EAFE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				EEA110DE23F453D800D9EAFE /* SceneDelegate.swift */,
 				EEA110E023F453D800D9EAFE /* ViewController.swift */,
 				EEA110E223F453D800D9EAFE /* Main.storyboard */,
+				EE58F71D23F5295500B5BE82 /* CollectionViewCell.swift */,
 				EEA110E523F453DF00D9EAFE /* Assets.xcassets */,
 				EEA110E723F453DF00D9EAFE /* LaunchScreen.storyboard */,
 				EEA110EA23F453DF00D9EAFE /* Info.plist */,
@@ -141,6 +144,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE58F71E23F5295500B5BE82 /* CollectionViewCell.swift in Sources */,
 				EEA110E123F453D800D9EAFE /* ViewController.swift in Sources */,
 				EEA110F123F4584100D9EAFE /* Categories.swift in Sources */,
 				EEA110DD23F453D800D9EAFE /* AppDelegate.swift in Sources */,
