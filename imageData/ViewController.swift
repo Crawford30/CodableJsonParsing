@@ -8,95 +8,172 @@
 
 import UIKit
 
-class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        if let count = Category?.count {
-            return count
-        }
-        return Category?.count ?? 0
-    }
-    
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
-    //=========================Not setting  the data  to be representd=======
-//       cell.categoryname = Category?[indexPath.row].name
-//        cell.categoryimageView = Category?[indexPath.row].image
-        return cell
-    }
-    
-
     @IBOutlet weak var collectionView: UICollectionView!
     
     var Category: [Categories]?
     
+    var pathToImages: NSString! = ""
+    
+    
+    
+    
+    
+    //=======Keep globals and outlets above viewDidLoad=============
+    
+    //--------------------------------------------------------------------------------------------------------
+    
+    override func viewDidLoad() {
+        // delegate and dataSource
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
+        super.viewDidLoad()
+        
+        buildPathToImages() // Will do what it says... this path is needed to show images in collecntionViewCells
+        
+        fetchCategory()
+        
+    }
+    
+    //--------------------------------------------------------------------------------------------------------
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        if let count = Category?.count {
+            
+            return count
+            
+        }
+        
+        return Category?.count ?? 0
+        
+    }
+    
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
+        // cell.categoryname.text = Category?[indexPath.item].getName(theName: data.name)
+        
+        //cell.categoryname.text = Category?[indexPath.item]
+        return cell
+        
+    }
+    
+    //------------------------------------------------------------------------------------------------------------
     
     func fetchCategory() {
         // Define server side script URL
-        let scriptUrl = "https://ichuzz2work.com/api/services/categories"
+        let dataUrl = "https://ichuzz2work.com/api/services/categories"
         
-        // Create URL Ibject
-        guard  let myUrl = URL(string: scriptUrl) else{ return}
-        
-        // Creaste URL Request
-        var request = URLRequest(url:myUrl)
-        
-        // Set request HTTP method to GET. It could be POST as well
-        request.httpMethod = "GET"
-        // request.addValue("Token token=884288bae150b9f2f68d8dc3a932071d", forHTTPHeaderField: "Authorization")
+        // Create URL Object
+        guard let myUrl = URL(string: dataUrl ) else { return }
         
         //===session===
-        let session = URLSession.shared
-        let dataTask = session.dataTask(with: request) { (data, response, error) in
+        let session  = URLSession.shared
+        let dataTask = session.dataTask(with: myUrl ) { ( theData, response, error) in
             
-            
-           // let str = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-           // print(str ?? "")
-            
-            //====check for errors===
-            if error == nil &&  data != nil {
-                //=====parse the json===
-                let decoder = JSONDecoder()
+            if error == nil && theData != nil {
+                
+                let decoder = JSONDecoder()  // Parse JSON
                 
                 do {
-                    let categories =   try  decoder.decode(Categories.self, from: data!)
                     
-//                     for json in categories["data"]  { ///giving error
-//
-//                        if let Name = json["name"] as? String {
-//                            print(Name)
-//                        }
-//
-//                    }
-//
+                    let fetchedCategories = try decoder.decode(Categories.self, from: theData!)
+                    
+                    for data in fetchedCategories.data  { ///giving error
+                        
+                        self.fetchImage( theImage: data.image )
+                        
+                        // let name_label = fetchedCategories.data["name"]
+                        self.getName(theName: data.name)
+                        
+                        
+                        
+                    }
+                    
+                    
+                    
+                    // Info in fetchedCategories must be stored globally so cellForItemAt can access it
+                    
+                    // reload collectionView on main UI thread
+                    //=================reloloading the data in the collection view=======
+                    DispatchQueue.main.async {
+                        self.collectionView.reloadData()
+                    }
+                    
                     
                 }
+                    
                 catch {
+                    
                     print("Error in json")
+                    
                 }
+                
             }
             
         }
         
-        //===make api call
-        dataTask.resume()
+        dataTask.resume() // Make sure task runs
+        
+    }
+    
+    //🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷
+    
+    func buildPathToImages() {
+        
+        // You have to build this code
+        
+        pathToImages = ""
+        
+        // Build path to app's Documents directory... then decide whether or not to store images
+        // in a subdirectory ... unless it is desired to download the images every single time 
+        
+    }
+    
+    //🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷
+    
+    func fetchImage( theImage: String ) {
+        
+        // You have to build this code
+        
+        print(theImage)
+        
+        //        Extract just filename from the path
+        //
+        //        Is that file in the local Documents or Cache directory?
+        //
+        //        YES - We are done
+        //
+        //        NO - Fetch the image from URL and save it to Documents / Cache directory
+        
+        
+        // Some sample Objective-C code to help get things started:
+        
+        //        NSURL *tempURL = [[NSURL alloc] initWithString:@"https://api.ichuzz2work.com/uploads/categories/cleaning.png"];
+        //
+        //        NSData *tempData = [[NSData alloc] initWithContentsOfURL:tempURL];
+        //
+        //        testImage.image = [UIImage imageWithData:tempData];
         
     }
     
     
+    //======fetching name===
     
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        fetchCategory()
-        
-        
+    func getName(theName: String) {
+        print(theName)
     }
+    
+    
+    
     
     
 }

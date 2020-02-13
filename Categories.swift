@@ -9,13 +9,16 @@
 import Foundation
 
 struct Categories: Codable {
+    
     var success: Bool
     var data: [Data]
     //var message: String?
+
 }
 
 
 struct Data: Codable {
+
     var id: Int
     var name: String //?
     var image: String //?
