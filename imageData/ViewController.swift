@@ -22,7 +22,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
-    //=========================Not setting the getting the data  to be representd=======
+    //=========================Not setting  the data  to be representd=======
 //       cell.categoryname = Category?[indexPath.row].name
 //        cell.categoryimageView = Category?[indexPath.row].image
         return cell
@@ -64,14 +64,14 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 do {
                     let categories =   try  decoder.decode(Categories.self, from: data!)
                     
-                     for json in categories["Data"]  { ///giving error
-                        
-                        if let Name = json["name"] as? String {
-                            print(Name)
-                        }
-                        
-                    }
-                  
+//                     for json in categories["data"]  { ///giving error
+//
+//                        if let Name = json["name"] as? String {
+//                            print(Name)
+//                        }
+//
+//                    }
+//
                     
                 }
                 catch {
